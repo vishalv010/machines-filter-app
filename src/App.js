@@ -1,23 +1,32 @@
-import logo from './logo.svg';
 import './App.css';
+import { FiltersContainer } from './components/FiltersContainer';
+import { useState, useEffect } from 'react';
+import { MachinesList } from './components/MachinesList';
+import { getFilteredMachines } from './utility';
 
 function App() {
+  const [activeButton, setActiveButton] = useState("");
+  const [machinesList, setMachinesList] = useState([]);
+  const handleButtonClick = (buttonName) => {
+    setActiveButton(buttonName);
+  }
+
+  useEffect(() => {
+     const filteredMachines = getFilteredMachines(activeButton);
+     setMachinesList(filteredMachines);
+  }, [activeButton]);
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <nav>
+          <h4>Machines List</h4>
+        </nav>
       </header>
+      <br />
+      <FiltersContainer activeButton={activeButton} onButtonClick={handleButtonClick} />
+      <br />
+      <MachinesList machinesList={machinesList} />
     </div>
   );
 }
